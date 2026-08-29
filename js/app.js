@@ -51,37 +51,71 @@ function showCertificate(p){
     });
 }
 
-/* ---- email lookup ------------------------------------------------------ */
+/* ---- lookup (email or name) -------------------------------------------- */
 $('lookupForm').addEventListener('submit', e => {
   e.preventDefault();
   resetUI();
 
   const raw = $('email').value.trim();
   if (!raw){
-    message('Please enter your registered email address.', true);
+    message('Please enter a registered email address or full name.', true);
     return;
   }
 
-  const matches = PARTICIPANTS[normKey(raw)];
+  const isEmail = /\S+@\S+\.\S+/.test(raw);
 
-  if (!matches){
-    message('No registration found for <strong>' + escapeHtml(raw) + '</strong>. ' +
-            'Use the exact address you filled in the registration form — for many ' +
-            'participants that was the college address.', true);
-    $('nameSearch').classList.remove('hidden');
+  if (isEmail){
+    // email lookup (existing behaviour)
+    const matches = PARTICIPANTS[normKey(raw)];
+    if (!matches){
+      message('No registration found for <strong>' + escapeHtml(raw) + '</strong>. ' +
+              'Try using the full name you registered with or the exact email address.', true);
+      $('nameSearch').classList.remove('hidden');
+      return;
+    }
+
+    if (matches.length === 1){
+      showCertificate(matches[0]);
+      return;
+    }
+
+    // multiple participants under same email
+    const list = $('pickList');
+    list.innerHTML = '';
+    matches.forEach(p => list.appendChild(
+      personButton(p, 'B.Tech ' + p.y + ' Year · ' + p.d, () => {
+        $('picker').classList.add('hidden');
+        showCertificate(p);
+      })
+    ));
+    $('picker').classList.remove('hidden');
     return;
   }
 
-  if (matches.length === 1){
-    showCertificate(matches[0]);
+  // name lookup
+  const q = normKey(raw);
+  const hits = [];
+  for (const email in PARTICIPANTS){
+    for (const p of PARTICIPANTS[email]){
+      if (normKey(p.n).includes(q)) hits.push([email, p]);
+    }
+  }
+
+  if (!hits.length){
+    message('No participant matches <strong>' + escapeHtml(raw) + '</strong>. Try your registered email or a different name.', true);
     return;
   }
 
-  // two participants registered under the same address
+  if (hits.length === 1){
+    showCertificate(hits[0][1]);
+    return;
+  }
+
+  // multiple name matches — show picker
   const list = $('pickList');
   list.innerHTML = '';
-  matches.forEach(p => list.appendChild(
-    personButton(p, 'B.Tech ' + p.y + ' Year · ' + p.d, () => {
+  hits.slice(0, 12).forEach(([email, p]) => list.appendChild(
+    personButton(p, email, () => {
       $('picker').classList.add('hidden');
       showCertificate(p);
     })
