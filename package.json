@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build:data": "python3 build/build_data.py",
-    "build": "python3 build/build_data.py && python3 build/bundle.py"
+    "build:data": "python build/build_data.py",
+    "build": "python build/build_data.py && python build/bundle.py"
   },
   "license": "UNLICENSED"
 }
