@@ -1,0 +1,123 @@
+/* ============================================================
+   SANKALP '26 — Certificate Portal
+   White theme · Poppins UI · Tinos (certificate body text)
+   ============================================================ */
+
+/* --- fonts (self-hosted, no CDN) --------------------------- */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:300;font-display:swap;
+  src:url(../assets/fonts/poppins-300.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;
+  src:url(../assets/fonts/poppins-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;
+  src:url(../assets/fonts/poppins-500.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;
+  src:url(../assets/fonts/poppins-600.woff2) format('woff2')}
+/* Tinos is metrically identical to Times New Roman — it is what the
+   certificate paragraph is drawn in, so both weights must be fully loaded
+   before the canvas renders (font-display:block).
+   400 = body copy · 700 = the filled-in name, year and department. */
+@font-face{font-family:'Tinos';font-style:normal;font-weight:400;font-display:block;
+  src:url(../assets/fonts/tinos-400.woff2) format('woff2')}
+@font-face{font-family:'Tinos';font-style:normal;font-weight:700;font-display:block;
+  src:url(../assets/fonts/tinos-700.woff2) format('woff2')}
+
+/* --- tokens ------------------------------------------------ */
+:root{
+  --ink:#0d0d0f;
+  --muted:#6b6f76;
+  --line:#e6e7ea;
+  --bg:#ffffff;
+  --soft:#f7f8fa;
+  --accent:#111114;
+  --err:#c0392b;
+  --radius:14px;
+}
+
+/* --- base -------------------------------------------------- */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+.wrap{width:100%;max-width:980px;margin:0 auto;padding:0 24px}
+.hidden{display:none !important}
+
+/* --- header ------------------------------------------------ */
+header{padding:44px 0 0}
+.brand{display:flex;align-items:center;gap:14px;justify-content:center}
+.brand img{width:44px;height:44px;display:block}
+.brand span{font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase}
+
+/* --- hero -------------------------------------------------- */
+.hero{text-align:center;padding:38px 0 34px}
+.hero h1{margin:0;font-weight:600;letter-spacing:-.02em;font-size:clamp(30px,5.4vw,46px);line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--muted);font-weight:300}
+.hero p{margin:14px auto 0;max-width:520px;color:var(--muted);font-size:15px;line-height:1.6;font-weight:300}
+
+/* --- lookup card ------------------------------------------- */
+.card{border:1px solid var(--line);border-radius:var(--radius);padding:26px;background:var(--bg)}
+form{display:flex;gap:10px;flex-wrap:wrap}
+.field{flex:1 1 260px;position:relative}
+label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin:0 0 8px;letter-spacing:.02em}
+input[type=text]{
+  width:100%;padding:14px 16px;font:inherit;font-size:15px;
+  border:1px solid var(--line);border-radius:10px;background:var(--soft);
+  color:var(--ink);outline:none;transition:border-color .15s,background .15s;
+}
+input[type=text]:focus{border-color:var(--accent);background:#fff}
+
+button{
+  font:inherit;font-weight:500;font-size:15px;cursor:pointer;
+  border:1px solid var(--accent);background:var(--accent);color:#fff;
+  padding:14px 24px;border-radius:10px;transition:opacity .15s;align-self:flex-end;
+}
+button:hover{opacity:.85}
+button:disabled{opacity:.5;cursor:default}
+button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+button.ghost:hover{border-color:var(--accent);opacity:1}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+
+.msg{margin-top:16px;font-size:14px;line-height:1.6;color:var(--muted)}
+.msg.error{color:var(--err)}
+
+/* --- pickers / name search --------------------------------- */
+.picker{margin-top:20px;border-top:1px solid var(--line);padding-top:18px}
+.picker p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.pick{
+  display:block;width:100%;text-align:left;background:#fff;color:var(--ink);
+  border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin-bottom:8px;
+  font-size:15px;font-weight:500;
+}
+.pick:hover{border-color:var(--accent);opacity:1}
+.pick small{display:block;font-weight:300;color:var(--muted);font-size:13px;margin-top:2px}
+.searchlist{margin-top:14px}
+.searchlist .pick{margin-bottom:6px}
+
+/* --- result ------------------------------------------------ */
+.result{margin-top:40px}
+.who{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.who strong{font-size:20px;font-weight:600}
+.who span{color:var(--muted);font-size:14px}
+.preview{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--soft);line-height:0}
+.preview canvas{width:100%;height:auto;display:block}
+
+/* --- footer ------------------------------------------------ */
+footer{margin-top:auto;padding:56px 0 40px;text-align:center;color:var(--muted);font-size:12.5px;font-weight:300;line-height:1.7}
+footer .sep{color:var(--line);margin:0 8px}
+
+/* --- responsive -------------------------------------------- */
+@media(max-width:560px){
+  .wrap{padding:0 18px}
+  header{padding-top:30px}
+  .hero{padding:28px 0 26px}
+  .card{padding:20px}
+  button{width:100%;align-self:stretch}
+  .field{flex:1 1 100%}
+}
